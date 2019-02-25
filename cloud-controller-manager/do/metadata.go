@@ -20,12 +20,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 const dropletRegionMetadataURL = "http://169.254.169.254/metadata/v1/region"
 
 // dropletRegion returns the region of the currently running program.
 func dropletRegion() (string, error) {
+	if region := os.Getenv("FAKE_REGION"); region != "" {
+		return region, nil
+	}
 	return httpGet(dropletRegionMetadataURL)
 }
 
